@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pantry-to-Plate</title>
+<style>
+  :root {
+    --green: #3f6b4a;
+    --green-light: #e8f0e6;
+    --cream: #faf7f2;
+    --text: #2b2b26;
+    --muted: #6b6a62;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  header.hero {
+    background: var(--green-light);
+    padding: 80px 0 64px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    color: var(--green);
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+  .hero p.sub {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 32px;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--green);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  section { padding: 64px 0; }
+  section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: var(--green);
+  }
+  .problem p, .solution p { font-size: 17px; color: var(--text); max-width: 640px; }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .step {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #e5e0d8;
+  }
+  .step .num {
+    display: inline-block;
+    width: 32px; height: 32px;
+    background: var(--green);
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .impact {
+    background: var(--green);
+    color: white;
+    text-align: center;
+    border-radius: 16px;
+    padding: 48px 24px;
+  }
+  .impact .stat {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  footer.cta {
+    text-align: center;
+    padding: 72px 0 96px;
+  }
+  footer.cta h2 { color: var(--green); }
+  footer.cta p { color: var(--muted); margin-bottom: 24px; }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="wrap">
+      <h1>Half an onion. Leftover rice. A bell pepper that's been in the fridge a few days too long.</h1>
+      <p class="sub">You've got the ingredients. You just don't have a plan for them. Pantry-to-Plate turns what's already in your kitchen into tonight's dinner, instead of tomorrow's trash.</p>
+      <a href="#cta" class="cta-btn">Try it with your own leftovers</a>
+    </div>
+  </header>
+
+  <section class="problem">
+    <div class="wrap">
+      <h2>The problem</h2>
+      <p>Most recipe tools start with a dish and send you shopping. By the time you've decided what to cook, the odd ingredients already in your fridge are forgotten, and they end up in the trash instead of on a plate.</p>
+    </div>
+  </section>
+
+  <section class="solution">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="num">1</span>
+          <p><strong>Tell us what you have.</strong> List the leftover ingredients sitting in your kitchen right now, however random.</p>
+        </div>
+        <div class="step">
+          <span class="num">2</span>
+          <p><strong>Get a real recipe.</strong> We build a dish around what you already have, not a shopping list for something new.</p>
+        </div>
+        <div class="step">
+          <span class="num">3</span>
+          <p><strong>Rescue it.</strong> See exactly how much food you kept from going to waste.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="impact">
+        <div class="stat">1,284</div>
+        <div>ingredients rescued from the trash so far</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="cta" id="cta">
+    <div class="wrap">
+      <h2>Got a few leftovers and no idea what to do with them?</h2>
+      <p>Join early access and help us rescue more food, one kitchen at a time.</p>
+      <a href="#" class="cta-btn">Get early access</a>
+    </div>
+  </footer>
+
+</body>
+</html>
