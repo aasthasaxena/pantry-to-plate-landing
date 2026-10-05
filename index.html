@@ -46,7 +46,11 @@
     text-decoration: none;
     font-weight: 600;
     font-size: 16px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
   }
+  .cta-btn:disabled { opacity: 0.6; cursor: not-allowed; }
   section { padding: 64px 0; }
   section h2 {
     font-size: 28px;
@@ -95,6 +99,35 @@
   }
   footer.cta h2 { color: var(--green); }
   footer.cta p { color: var(--muted); margin-bottom: 24px; }
+
+  .try-it {
+    background: white;
+    border-radius: 16px;
+    padding: 40px 32px;
+    border: 1px solid #e5e0d8;
+  }
+  .try-it textarea {
+    width: 100%;
+    min-height: 90px;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #d8d2c6;
+    font-family: inherit;
+    font-size: 16px;
+    resize: vertical;
+    margin-bottom: 16px;
+  }
+  .result-box {
+    margin-top: 24px;
+    padding: 20px;
+    border-radius: 12px;
+    background: var(--green-light);
+    white-space: pre-wrap;
+    font-size: 15px;
+    display: none;
+  }
+  .result-box.error { background: #f5e3e0; }
+  .result-box.show { display: block; }
 </style>
 </head>
 <body>
@@ -103,7 +136,7 @@
     <div class="wrap">
       <h1>Half an onion. Leftover rice. A bell pepper that's been in the fridge a few days too long.</h1>
       <p class="sub">You've got the ingredients. You just don't have a plan for them. Pantry-to-Plate turns what's already in your kitchen into tonight's dinner, instead of tomorrow's trash.</p>
-      <a href="#cta" class="cta-btn">Try it with your own leftovers</a>
+      <a href="#try-it" class="cta-btn">Try it with your own leftovers</a>
     </div>
   </header>
 
@@ -134,10 +167,22 @@
     </div>
   </section>
 
+  <section id="try-it">
+    <div class="wrap">
+      <div class="try-it">
+        <h2>Try it now</h2>
+        <p style="color: var(--muted); margin-bottom: 16px;">List what's in your kitchen right now, comma separated.</p>
+        <textarea id="ingredients-input" placeholder="e.g. half an onion, leftover rice, a bell pepper"></textarea>
+        <button class="cta-btn" id="get-recipe-btn">Get my recipe</button>
+        <div class="result-box" id="result-box"></div>
+      </div>
+    </div>
+  </section>
+
   <section>
     <div class="wrap">
       <div class="impact">
-        <div class="stat">1,284</div>
+        <div class="stat" id="impact-count">1,284</div>
         <div>ingredients rescued from the trash so far</div>
       </div>
     </div>
@@ -147,9 +192,65 @@
     <div class="wrap">
       <h2>Got a few leftovers and no idea what to do with them?</h2>
       <p>Join early access and help us rescue more food, one kitchen at a time.</p>
-      <a href="#" class="cta-btn">Get early access</a>
+      <a href="#try-it" class="cta-btn">Get early access</a>
     </div>
   </footer>
+
+  <script>
+    const btn = document.getElementById('get-recipe-btn');
+    const input = document.getElementById('ingredients-input');
+    const resultBox = document.getElementById('result-box');
+    const countEl = document.getElementById('impact-count');
+
+    async function loadCount() {
+      try {
+        const res = await fetch('/api/recipe');
+        const data = await res.json();
+        if (data.count !== undefined) countEl.textContent = data.count.toLocaleString();
+      } catch (e) { /* keep placeholder if this fails */ }
+    }
+    loadCount();
+
+    btn.addEventListener('click', async () => {
+      const ingredients = input.value.trim();
+      if (!ingredients) {
+        resultBox.textContent = 'Please list at least one ingredient.';
+        resultBox.className = 'result-box error show';
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Thinking...';
+      resultBox.className = 'result-box show';
+      resultBox.textContent = 'Finding a recipe for you...';
+
+      try {
+        const res = await fetch('/api/recipe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ingredients }),
+        });
+        const data = await res.json();
+
+        if (data.error) {
+          resultBox.className = 'result-box error show';
+          resultBox.textContent = data.error;
+        } else if (data.refused) {
+          resultBox.className = 'result-box error show';
+          resultBox.textContent = data.recipe;
+        } else {
+          resultBox.className = 'result-box show';
+          resultBox.textContent = data.recipe;
+          if (data.count !== undefined) countEl.textContent = data.count.toLocaleString();
+        }
+      } catch (e) {
+        resultBox.className = 'result-box error show';
+        resultBox.textContent = 'Something went wrong. Please try again.';
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Get my recipe';
+    });
+  </script>
 
 </body>
 </html>
