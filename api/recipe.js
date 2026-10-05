@@ -41,9 +41,12 @@ export default async function handler(req, res) {
 
     const result = await model.generateContent(`Leftover ingredients: ${ingredients}`);
     const text = result.response.text().trim();
+    const usage = result.response.usageMetadata || {};
+    const inputTokens = usage.promptTokenCount || 0;
+    const outputTokens = usage.candidatesTokenCount || 0;
     const refused = text.startsWith("REFUSED:");
 
-    await supabase.from("requests").insert({ ingredients, recipe_output: text });
+    await supabase.from("requests").insert({ ingredients, recipe_output: text, input_tokens: inputTokens, output_tokens: outputTokens });
 
     const { count } = await supabase
       .from("requests")
