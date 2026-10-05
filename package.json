@@ -1,0 +1,8 @@
+{
+  "name": "pantry-to-plate-landing",
+  "version": "1.0.0",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "@supabase/supabase-js": "^2.45.0"
+  }
+}
